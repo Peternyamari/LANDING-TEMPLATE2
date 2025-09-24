@@ -56,8 +56,21 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
             padding: 16px 0;
         }
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: 1px solid var(--navy);
+            color: var(--navy);
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .menu-toggle:focus { outline: 2px solid var(--gold); outline-offset: 2px; }
         .logo {
             font-family: Georgia, 'Times New Roman', Times, serif;
             color: var(--navy);
@@ -178,9 +191,18 @@
         /* Responsive */
         @media (max-width: 760px) {
             .hero-inner { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 32px; }
+            .hero h1 { font-size: 28px; }
+            .hero .media { height: 180px; }
             .grid { grid-template-columns: 1fr; }
-            nav a { margin-left: 14px; }
+            .menu-toggle { display: inline-block; }
+            nav { width: 100%; display: none; flex-direction: column; gap: 8px; }
+            nav.open { display: flex; }
+            nav a { margin-left: 0; padding: 10px 0; }
+            .cta-row { flex-direction: column; }
+            .cta-row .btn { width: 100%; text-align: center; }
+            .actions { flex-direction: column; gap: 10px; }
+            .actions .btn { width: 100%; }
+            .nav { gap: 6px; }
         }
     </style>
 </head>
@@ -189,7 +211,8 @@
     <header>
         <div class="container nav">
             <div class="logo"><img src="images/Bob10LabsLOGO.png" alt="10 Labs Rentals logo" /><span>10 Labs Rentals</span></div>
-            <nav aria-label="Primary navigation">
+            <button class="menu-toggle" aria-controls="primary-nav" aria-expanded="false">Menu</button>
+            <nav id="primary-nav" aria-label="Primary navigation">
                 <a href="#top">Home</a>
                 <a href="#listings">Listings</a>
                 <a href="contact.html">Contact</a>
@@ -310,6 +333,18 @@
 
     <!-- Inline JS: smooth scrolling, dynamic year -->
     <script>
+        // Mobile menu toggle
+        (function(){
+            var btn = document.querySelector('.menu-toggle');
+            var nav = document.getElementById('primary-nav');
+            if (btn && nav) {
+                btn.addEventListener('click', function(){
+                    var open = nav.classList.toggle('open');
+                    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+                });
+            }
+        })();
+
         // Image fallback: if an image fails to load, cycle through provided fallbacks
         function attachImageFallbacks() {
             const imgs = document.querySelectorAll('img[data-fallback]');
