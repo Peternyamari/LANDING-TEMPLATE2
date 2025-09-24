@@ -23,7 +23,9 @@
         .container { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 
         header { background: white; border-bottom: 1px solid var(--lightgray); }
-        .nav { display:flex; align-items:center; justify-content:space-between; padding: 16px 0; }
+        .nav { display:flex; align-items:center; justify-content:space-between; padding: 16px 0; flex-wrap: wrap; gap: 10px; }
+        .menu-toggle { display:none; background: transparent; border: 1px solid var(--navy); color: var(--navy); border-radius: 8px; padding: 8px 10px; font-weight:700; cursor:pointer; }
+        .menu-toggle:focus { outline: 2px solid var(--gold); outline-offset: 2px; }
         .logo { font-family: Georgia, 'Times New Roman', Times, serif; color: var(--navy); font-size: 22px; font-weight: 700; }
         .logo img { height: 28px; width: auto; vertical-align: middle; margin-right: 10px; border-radius: 4px; }
         nav a { color: var(--navy); text-decoration: none; margin-left: 22px; font-weight: 600; }
@@ -34,7 +36,10 @@
         .btn.outline { background:white; color: var(--navy); margin-left: 10px; }
 
         @media (max-width: 760px) {
-            nav a { margin-left: 14px; }
+            .menu-toggle { display: inline-block; }
+            nav { width: 100%; display: none; flex-direction: column; gap: 8px; }
+            nav.open { display: flex; }
+            nav a { margin-left: 0; padding: 10px 0; }
             .btn.outline { margin-left: 0; margin-top: 10px; }
         }
         footer { border-top: 0; padding: 26px 0; background: var(--navy); color: #e9eef5; }
@@ -48,7 +53,8 @@
     <header>
         <div class="container nav">
             <div class="logo"><img src="images/Bob10LabsLOGO.png" alt="10 Labs Rentals logo" /><span>10 Labs Rentals</span></div>
-            <nav>
+            <button class="menu-toggle" aria-controls="primary-nav" aria-expanded="false">Menu</button>
+            <nav id="primary-nav">
                 <a href="index.html">Home</a>
                 <a href="index.html#listings">Listings</a>
                 <a href="contact.html">Contact</a>
@@ -84,6 +90,17 @@
         } catch (err) {
             // If blocked, leave generic message
         }
+        // Mobile menu toggle
+        (function(){
+            var btn = document.querySelector('.menu-toggle');
+            var nav = document.getElementById('primary-nav');
+            if (btn && nav) {
+                btn.addEventListener('click', function(){
+                    var open = nav.classList.toggle('open');
+                    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+                });
+            }
+        })();
     </script>
 
     <!-- Footer -->
