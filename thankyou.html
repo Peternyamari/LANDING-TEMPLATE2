@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Thank You — 10 Labs Rentals</title>
+    <!-- Inline CSS for thank-you page -->
+    <style>
+        :root {
+            --navy: #0b2340;
+            --gold: #c79a2b;
+            --offwhite: #fbfbfa;
+            --lightgray: #f2f4f6;
+            --text: #28323f;
+            --muted: #6b7786;
+            --maxw: 1100px;
+            --radius: 10px;
+            --shadow: 0 8px 20px rgba(11, 35, 64, 0.08);
+        }
+        html, body { margin:0; padding:0; background: var(--offwhite); color: var(--text); }
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; }
+        h1, h2, h3 { font-family: Georgia, 'Times New Roman', Times, serif; color: var(--navy); margin: 0 0 0.4rem 0; }
+        .container { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+
+        header { background: white; border-bottom: 1px solid var(--lightgray); }
+        .nav { display:flex; align-items:center; justify-content:space-between; padding: 16px 0; }
+        .logo { font-family: Georgia, 'Times New Roman', Times, serif; color: var(--navy); font-size: 22px; font-weight: 700; }
+        .logo img { height: 28px; width: auto; vertical-align: middle; margin-right: 10px; border-radius: 4px; }
+        nav a { color: var(--navy); text-decoration: none; margin-left: 22px; font-weight: 600; }
+
+        .card { background: white; border: 1px solid var(--lightgray); border-radius: var(--radius); box-shadow: var(--shadow); padding: 32px; margin: 40px 0; text-align: center; }
+        .btn { display:inline-block; padding: 12px 18px; border-radius: 999px; border: 1px solid var(--navy); background: var(--navy); color: white; text-decoration:none; font-weight: 700; box-shadow: var(--shadow); transition: transform 120ms ease, box-shadow 120ms ease; }
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 12px 26px rgba(11,35,64,0.14); }
+        .btn.outline { background:white; color: var(--navy); margin-left: 10px; }
+
+        @media (max-width: 760px) {
+            nav a { margin-left: 14px; }
+            .btn.outline { margin-left: 0; margin-top: 10px; }
+        }
+        footer { border-top: 0; padding: 26px 0; background: var(--navy); color: #e9eef5; }
+        .footer-inner { display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap: 10px; }
+        .footer-nav a { color: var(--gold); text-decoration: none; margin-right: 16px; }
+        .footer-nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container nav">
+            <div class="logo"><img src="images/Bob10LabsLOGO.png" alt="10 Labs Rentals logo" /><span>10 Labs Rentals</span></div>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="index.html#listings">Listings</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Message -->
+    <section>
+        <div class="container">
+            <div class="card">
+                <h1 id="headline">Thank you — your request has been received.</h1>
+                <p style="color: var(--muted); max-width: 640px; margin: 10px auto 22px;">
+                    We’ll be in touch shortly to coordinate next steps and confirm a time that works well.
+                </p>
+                <div>
+                    <a class="btn" href="index.html">Back to Home</a>
+                    <a class="btn outline" href="index.html#listings">View Listings</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Personalize with name from localStorage
+        try {
+            const name = localStorage.getItem('contactName');
+            if (name) {
+                document.getElementById('headline').textContent = `Thank you, ${name} — your request has been received.`;
+                // Optional: clear after use
+                // localStorage.removeItem('contactName');
+            }
+        } catch (err) {
+            // If blocked, leave generic message
+        }
+    </script>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-inner">
+            <div>© <span id="year"></span> 10 Labs Rentals</div>
+            <div class="footer-nav">
+                <a href="index.html">Home</a>
+                <a href="index.html#listings">Listings</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+
+

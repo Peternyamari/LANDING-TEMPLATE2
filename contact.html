@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contact — 10 Labs Rentals</title>
+    <!-- Inline CSS for contact page -->
+    <style>
+        :root {
+            --navy: #0b2340;
+            --gold: #c79a2b;
+            --offwhite: #fbfbfa;
+            --lightgray: #f2f4f6;
+            --text: #28323f;
+            --muted: #6b7786;
+            --maxw: 1100px;
+            --radius: 10px;
+            --shadow: 0 8px 20px rgba(11, 35, 64, 0.08);
+        }
+        html, body { margin: 0; padding: 0; background: var(--offwhite); color: var(--text); }
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; }
+        h1, h2, h3 { font-family: Georgia, 'Times New Roman', Times, serif; color: var(--navy); margin: 0 0 0.4rem 0; }
+        p { margin: 0 0 1rem 0; }
+        .container { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+
+        header { background: white; border-bottom: 1px solid var(--lightgray); }
+        .nav { display:flex; align-items:center; justify-content:space-between; padding: 16px 0; }
+        .logo { font-family: Georgia, 'Times New Roman', Times, serif; color: var(--navy); font-size: 22px; font-weight: 700; }
+        .logo img { height: 28px; width: auto; vertical-align: middle; margin-right: 10px; border-radius: 4px; }
+        nav a { color: var(--navy); text-decoration: none; margin-left: 22px; font-weight: 600; }
+
+        .card { background: white; border: 1px solid var(--lightgray); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; }
+        form { display:grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        label { font-weight: 700; color: var(--navy); font-size: 14px; }
+        input, textarea { width: 100%; padding: 12px 12px; border-radius: 8px; border: 1px solid #dfe4ea; background: #fff; font: inherit; color: var(--text); }
+        textarea { min-height: 120px; resize: vertical; grid-column: 1 / -1; }
+        .full { grid-column: 1 / -1; }
+        .btn { display:inline-block; padding: 12px 18px; border-radius: 999px; border: 1px solid var(--navy); background: var(--navy); color: white; text-decoration:none; font-weight: 700; box-shadow: var(--shadow); transition: transform 120ms ease, box-shadow 120ms ease; }
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 12px 26px rgba(11,35,64,0.14); }
+
+        .note { color: var(--muted); font-size: 14px; }
+        .error { color: #b00020; font-size: 13px; margin-top: 6px; display: none; }
+
+        @media (max-width: 760px) {
+            form { grid-template-columns: 1fr; }
+            nav a { margin-left: 14px; }
+        }
+        footer { border-top: 0; padding: 26px 0; background: var(--navy); color: #e9eef5; }
+        .footer-inner { display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap: 10px; }
+        .footer-nav a { color: var(--gold); text-decoration: none; margin-right: 16px; }
+        .footer-nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container nav">
+            <div class="logo"><img src="images/Bob10LabsLOGO.png" alt="10 Labs Rentals logo" /><span>10 Labs Rentals</span></div>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="index.html#listings">Listings</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contact form -->
+    <section style="padding: 36px 0 60px;">
+        <div class="container">
+            <div class="card">
+                <h1>Schedule a Viewing</h1>
+                <p class="note" id="propertyContext"></p>
+                <form id="contactForm" novalidate>
+                    <!-- Hidden input to capture property id from URL -->
+                    <input type="hidden" id="propertyId" name="propertyId" />
+
+                    <div>
+                        <label for="fullName">Full Name</label>
+                        <input id="fullName" name="fullName" type="text" placeholder="Peter Nyamari" autocomplete="name" inputmode="text" required />
+                        <div class="error" id="errName">Please enter your full name.</div>
+                    </div>
+                    <div>
+                        <label for="email">Email</label>
+                        <input id="email" name="email" type="email" placeholder="peternyamari70@gmail.com" autocomplete="email" inputmode="email" required />
+                        <div class="error" id="errEmail">Please provide a valid email address.</div>
+                    </div>
+                    <div>
+                        <label for="phone">Phone</label>
+                        <input id="phone" name="phone" type="tel" placeholder="0705 672 898" autocomplete="tel" inputmode="tel" pattern="^[0-9 +()-]{7,}$" />
+                        <div class="error" id="errPhone">Please enter a valid phone number.</div>
+                    </div>
+                    <div>
+                        <label for="date">Preferred Date</label>
+                        <input id="date" name="date" type="date" />
+                    </div>
+                    <div class="full">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" placeholder="Tell us what matters most to you." rows="5"></textarea>
+                    </div>
+                    <div class="full" style="display:flex; gap: 10px; align-items:center;">
+                        <button class="btn" type="submit">Submit Request</button>
+                        <a class="btn" href="index.html#listings" style="background:white; color: var(--navy);">Back to Listings</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Inline JS: capture propertyId, handle submit, redirect -->
+    <script>
+        function getParam(name) {
+            const params = new URLSearchParams(window.location.search);
+            return params.get(name);
+        }
+
+        // Set context from property id if present
+        const propertyId = getParam('id');
+        const propertyField = document.getElementById('propertyId');
+        const context = document.getElementById('propertyContext');
+        if (propertyId) {
+            propertyField.value = propertyId;
+            context.textContent = `Request for Property ID ${propertyId}`;
+        } else {
+            context.textContent = 'Let us know which residence you would like to tour.';
+        }
+
+        // Client-side validation and submit handling
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Hide previous errors
+            ['errName','errEmail','errPhone'].forEach(function(id){
+                var el = document.getElementById(id); if (el) el.style.display = 'none';
+            });
+
+            var nameEl = document.getElementById('fullName');
+            var emailEl = document.getElementById('email');
+            var phoneEl = document.getElementById('phone');
+
+            var name = (nameEl.value || '').trim();
+            var email = (emailEl.value || '').trim();
+            var phone = (phoneEl.value || '').trim();
+
+            var valid = true;
+            if (!name) { document.getElementById('errName').style.display = 'block'; valid = false; }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.getElementById('errEmail').style.display = 'block'; valid = false; }
+            if (phone && !/^[0-9 +()\-]{7,}$/.test(phone)) { document.getElementById('errPhone').style.display = 'block'; valid = false; }
+
+            if (!valid) return;
+
+            try {
+                if (name) localStorage.setItem('contactName', name);
+            } catch (err) {
+                // If localStorage is blocked, proceed without personalization
+            }
+            window.location.href = 'thankyou.html';
+        });
+    </script>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-inner">
+            <div>© <span id="year"></span> 10 Labs Rentals</div>
+            <div class="footer-nav">
+                <a href="index.html">Home</a>
+                <a href="index.html#listings">Listings</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+
+

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Property Details — 10 Labs Rentals</title>
+    <!-- Inline CSS for property detail template -->
+    <style>
+        :root {
+            --navy: #0b2340;
+            --gold: #c79a2b;
+            --offwhite: #fbfbfa;
+            --lightgray: #f2f4f6;
+            --text: #28323f;
+            --muted: #6b7786;
+            --maxw: 1100px;
+            --radius: 10px;
+            --shadow: 0 8px 20px rgba(11, 35, 64, 0.08);
+        }
+        html, body { margin: 0; padding: 0; background: var(--offwhite); color: var(--text); }
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; }
+        h1, h2, h3 { font-family: Georgia, 'Times New Roman', Times, serif; color: var(--navy); margin: 0 0 0.4rem 0; }
+        p { margin: 0 0 1rem 0; }
+        .container { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+
+        header { background: white; border-bottom: 1px solid var(--lightgray); }
+        .nav { display:flex; align-items:center; justify-content:space-between; padding: 16px 0; }
+        .logo { font-family: Georgia, 'Times New Roman', Times, serif; color: var(--navy); font-size: 22px; font-weight: 700; }
+        .logo img { height: 28px; width: auto; vertical-align: middle; margin-right: 10px; border-radius: 4px; }
+        nav a { color: var(--navy); text-decoration: none; margin-left: 22px; font-weight: 600; }
+
+        .hero { padding: 28px 0; }
+        .media { width: 100%; height: 420px; object-fit: cover; border-radius: var(--radius); background: var(--lightgray); box-shadow: var(--shadow); }
+        .layout { display: grid; grid-template-columns: 2fr 1fr; gap: 28px; margin: 24px 0 40px; }
+
+        .card { background: white; border: 1px solid var(--lightgray); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; }
+        .pill { display:inline-block; padding: 6px 10px; border-radius:999px; background: #fff7e6; color: #8a5a00; border: 1px solid #ffe0a1; font-size: 12px; font-weight: 700; letter-spacing: .3px; }
+        .divider { height: 1px; background: var(--lightgray); margin: 14px 0; }
+
+        .btn { display:inline-block; padding: 12px 18px; border-radius: 999px; border: 1px solid var(--navy); background: var(--navy); color: white; text-decoration:none; font-weight: 700; box-shadow: var(--shadow); transition: transform 120ms ease, box-shadow 120ms ease; }
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 12px 26px rgba(11,35,64,0.14); }
+        .btn.outline { background:white; color: var(--navy); }
+
+        footer { border-top: 0; padding: 26px 0; background: var(--navy); color: #e9eef5; }
+        .footer-inner { display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap: 10px; }
+        .footer-nav a { color: var(--gold); text-decoration: none; margin-right: 16px; }
+        .footer-nav a:hover { text-decoration: underline; }
+
+        @media (max-width: 760px) {
+            .layout { grid-template-columns: 1fr; }
+            .media { height: 260px; }
+            nav a { margin-left: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container nav">
+            <div class="logo"><img src="images/Bob10LabsLOGO.png" alt="10 Labs Rentals logo" /><span>10 Labs Rentals</span></div>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="index.html#listings">Listings</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero / Image -->
+    <section class="hero">
+        <div class="container">
+            <img id="propertyImage" class="media" alt="Property image" />
+        </div>
+    </section>
+
+    <!-- Main content: details and sidebar -->
+    <section>
+        <div class="container layout">
+            <!-- Details -->
+            <article class="card">
+                <h1 id="propertyTitle">Property Title</h1>
+                <div class="pill" id="propertyLocation">Location</div>
+                <div class="divider"></div>
+                <p id="propertyDescription">Description</p>
+                <h3>Amenities</h3>
+                <ul id="amenitiesList" style="margin-top:6px; padding-left: 18px;">
+                    <!-- Filled by JS -->
+                </ul>
+            </article>
+
+            <!-- Sidebar -->
+            <aside class="card">
+                <div style="display:flex; align-items:baseline; justify-content:space-between; gap:8px;">
+                    <h2 style="margin:0;">Lease Details</h2>
+                    <div id="price" style="font-weight:800; color: var(--navy);"></div>
+                </div>
+                <p id="meta" style="color: var(--muted);"></p>
+                <div class="divider"></div>
+                <a id="bookBtn" class="btn" href="#">Book Viewing</a>
+                <a id="brochure" class="btn outline" href="#" download style="margin-left:10px;">Download Brochure (PDF)</a>
+            </aside>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-inner">
+            <div>© <span id="year"></span> 10 Labs Rentals</div>
+            <div class="footer-nav">
+                <a href="index.html">Home</a>
+                <a href="index.html#listings">Listings</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Inline JS: load property by id from URL -->
+    <script>
+        // Sample data for three properties
+        const PROPERTIES = {
+            1: {
+                id: 1,
+                title: 'The Karura Residence',
+                location: 'Kilimani, Nairobi',
+                price: 'KSh 20,000/mo',
+                meta: '1 Bed • 1 Bath • 55 sqm',
+                description: 'Bright one-bedroom with warm finishes and a practical layout. Set on a quiet lane in Kilimani, minutes from shopping and quick matatu links. A calm home base with good light throughout the day.',
+                amenities: ['Hardwood floors', 'Compact kitchen', 'Elevator building', 'On-site caretaker', 'Pet friendly'],
+                // Local image (from /images) with fallbacks
+                image: 'images/066c46bc46ded6-modern-1-bedroom-apartment-in-kilimani-for-rent-kilimani-nairobi.jpg',
+                imageFallbacks: ['images/apt1.jpeg','images/41679570.jpg'],
+                brochure: '#'
+            },
+            2: {
+                id: 2,
+                title: 'Riverside Court',
+                location: 'Westlands, Nairobi',
+                price: 'KSh 27,000/mo',
+                meta: '2 Bed • 1 Bath • 85 sqm',
+                description: 'Corner two-bedroom close to shops and cafés in Westlands. Efficient split plan, modern kitchen, and on-site laundry. Easy access to Waiyaki Way and reliable transport options.',
+                amenities: ['Modern kitchen', 'On-site laundry', 'Bike storage', 'Common courtyard', '24/7 security'],
+                // Local image (from /images) with fallbacks
+                image: 'images/modern-2-bedroom-fully-furnished-apartment-plus-dsq-to-let-in-kilimani-hxljd.jpg',
+                imageFallbacks: ['images/nairobi-astoria-apartments-lavington-photo-13.jpeg','images/42138135.jpg'],
+                brochure: '#'
+            },
+            3: {
+                id: 3,
+                title: 'Seaside Loft (Airbnb)',
+                location: 'Nyali, Mombasa',
+                price: 'KSh 6,000/night',
+                meta: '1 Bed • 1 Bath • 50 sqm',
+                description: 'Airy one-bedroom loft near the beach with flexible nightly stays. Fresh interiors, compact kitchen, and a private balcony for warm coastal evenings. Walkable to eateries and the waterfront.',
+                amenities: ['Near beach', 'Fast Wi‑Fi', 'Self check-in', 'Weekly cleaning', 'Air conditioning'],
+                // Local image (from /images) with fallbacks
+                image: 'images/play2.jpg',
+                imageFallbacks: ['images/502149776.jpg','images/images (3).jpeg','images/images (4).jpeg'],
+                brochure: '#'
+            }
+        };
+
+        // Utility: read query param
+        function getParam(name) {
+            const params = new URLSearchParams(window.location.search);
+            return params.get(name);
+        }
+
+        // (Placeholders now referenced from /images; utility removed)
+
+        // Render property content
+        function render() {
+            const id = getParam('id') || '1';
+            const property = PROPERTIES[id];
+            if (!property) {
+                // Fallback to 1 if invalid id
+                window.location.search = '?id=1';
+                return;
+            }
+
+            document.title = `${property.title} — 10 Labs Rentals`;
+
+            document.getElementById('propertyTitle').textContent = property.title;
+            document.getElementById('propertyLocation').textContent = property.location;
+            document.getElementById('propertyDescription').textContent = property.description;
+            document.getElementById('price').textContent = property.price;
+            document.getElementById('meta').textContent = property.meta;
+            // Load main image with graceful fallbacks
+            const imageEl = document.getElementById('propertyImage');
+            const candidates = [property.image]
+                .concat(property.imageFallbacks || []);
+            let idx = 0;
+            function tryNext() {
+                if (idx < candidates.length) {
+                    imageEl.src = candidates[idx++];
+                } else {
+                    imageEl.removeEventListener('error', tryNext);
+                }
+            }
+            imageEl.addEventListener('error', tryNext);
+            tryNext();
+
+            const list = document.getElementById('amenitiesList');
+            list.innerHTML = '';
+            property.amenities.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                list.appendChild(li);
+            });
+
+            const bookLink = `contact.html?id=${property.id}`;
+            document.getElementById('bookBtn').href = bookLink;
+            document.getElementById('brochure').href = property.brochure;
+            document.getElementById('year').textContent = new Date().getFullYear();
+        }
+
+        render();
+    </script>
+</body>
+</html>
+
+

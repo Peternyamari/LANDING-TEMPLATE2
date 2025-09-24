@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>10 Labs Rentals — Classic Apartment Homes</title>
+    <!-- Inline CSS: classic, clean, trustworthy palette and typography -->
+    <style>
+        /* Root variables for theme colors and spacing */
+        :root {
+            --navy: #0b2340;          /* headers */
+            --gold: #c79a2b;          /* accents */
+            --offwhite: #fbfbfa;      /* page background */
+            --lightgray: #f2f4f6;     /* surfaces */
+            --text: #28323f;          /* body text */
+            --muted: #6b7786;         /* secondary text */
+            --maxw: 1100px;           /* container width */
+            --radius: 10px;           /* card radius */
+            --shadow: 0 8px 20px rgba(11, 35, 64, 0.08);
+        }
+
+        /* Global resets */
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: var(--offwhite);
+            color: var(--text);
+        }
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+        }
+        h1, h2, h3, h4 {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            color: var(--navy);
+            margin: 0 0 0.4rem 0;
+        }
+        p { margin: 0 0 1rem 0; }
+
+        /* Layout container */
+        .container {
+            max-width: var(--maxw);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header and navigation */
+        header {
+            background: white;
+            border-bottom: 1px solid var(--lightgray);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+        }
+        .logo {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            color: var(--navy);
+            font-size: 22px;
+            letter-spacing: 0.3px;
+            font-weight: 700;
+        }
+        .logo img { height: 28px; width: auto; vertical-align: middle; margin-right: 10px; border-radius: 4px; }
+        nav a {
+            color: var(--navy);
+            text-decoration: none;
+            margin-left: 22px;
+            font-weight: 600;
+            position: relative;
+        }
+        nav a::after {
+            content: "";
+            position: absolute;
+            left: 0; bottom: -2px;
+            width: 0; height: 2px;
+            background: var(--gold);
+            transition: width 180ms ease;
+        }
+        nav a:hover::after { width: 100%; }
+
+        /* Hero section */
+        .hero {
+            background: linear-gradient(180deg, #ffffff 0%, var(--offwhite) 100%);
+            padding: 64px 0 48px;
+        }
+        .hero-inner {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 32px;
+            align-items: center;
+        }
+        .hero h1 {
+            font-size: 42px;
+            line-height: 1.2;
+        }
+        .hero p {
+            color: var(--muted);
+            font-size: 18px;
+        }
+        .cta-row { margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 999px;
+            border: 1px solid var(--navy);
+            background: var(--navy);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease, color 120ms ease;
+            box-shadow: var(--shadow);
+        }
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 12px 26px rgba(11,35,64,0.14); }
+        .btn.outline { background: white; color: var(--navy); }
+        .btn.outline:hover { background: var(--lightgray); }
+
+        /* About section */
+        .about { padding: 40px 0; }
+        .about .card {
+            background: white;
+            border: 1px solid var(--lightgray);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        /* Listings grid */
+        .listings { padding: 32px 0 64px; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            border: 1px solid var(--lightgray);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: transform 120ms ease, box-shadow 160ms ease;
+            position: relative; /* for micro-tooltip */
+        }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 14px 28px rgba(11,35,64,0.12); }
+
+        /* Micro-interaction: tooltip on hover */
+        .card[data-tip]:hover::after {
+            content: attr(data-tip);
+            position: absolute;
+            top: 10px; right: 10px;
+            background: rgba(11,35,64,0.92);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            pointer-events: none;
+            box-shadow: var(--shadow);
+        }
+
+        .media { width: 100%; height: 200px; display: block; object-fit: cover; background: var(--lightgray); }
+        .card-body { padding: 16px 16px 18px; }
+        .title-row { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+        .title { font-family: Georgia, 'Times New Roman', Times, serif; font-size: 20px; color: var(--navy); }
+        .location { color: var(--muted); font-size: 14px; }
+        .features { display: flex; gap: 10px; color: var(--muted); font-size: 14px; margin: 8px 0 10px; }
+        .price { font-weight: 800; color: var(--navy); }
+        .actions { margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
+
+        /* Footer */
+        footer { border-top: 0; padding: 26px 0; background: var(--navy); color: #e9eef5; }
+        .social a { color: var(--gold); text-decoration: none; margin-right: 16px; }
+        .social a:hover { text-decoration: underline; }
+
+        /* Responsive */
+        @media (max-width: 760px) {
+            .hero-inner { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 32px; }
+            .grid { grid-template-columns: 1fr; }
+            nav a { margin-left: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header: logo and navigation -->
+    <header>
+        <div class="container nav">
+            <div class="logo"><img src="images/Bob10LabsLOGO.png" alt="10 Labs Rentals logo" /><span>10 Labs Rentals</span></div>
+            <nav aria-label="Primary navigation">
+                <a href="#top">Home</a>
+                <a href="#listings">Listings</a>
+                <a href="contact.html">Contact</a>
+                <a href="#resume" title="Download resume">Resume</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero: primary headline and calls to action -->
+    <section class="hero" id="top">
+        <div class="container hero-inner">
+            <div>
+                <h1>Classic Rentals — Thoughtfully Designed Apartments</h1>
+                <p>Kenya-based rentals with enduring finishes and practical layouts. Built with care, managed with integrity, and presented with a focus on the details that make a home feel right.</p>
+                <div class="cta-row">
+                    <a class="btn" href="#listings">View Listings</a>
+                    <a class="btn outline" href="contact.html">Schedule a Viewing</a>
+                </div>
+            </div>
+            <!-- Hero image from your images folder -->
+            <img class="media" alt="Nairobi apartment interior" src="images/play1.jpg" data-fallback="images/play2.jpg,images/apt1.jpeg,images/41679570.jpg,images/42138135.jpg,images/images.jpeg" />
+        </div>
+    </section>
+
+    <!-- About: author/designer note -->
+    <section class="about">
+        <div class="container">
+            <div class="card">
+                <h2>About This Demo</h2>
+                <p>I’m a designer–developer focused on building clear, trustworthy interfaces. This demo showcases a classic rentals brand with a careful typographic system, lean code, and maintainable structure—no frameworks, just semantic HTML, modern CSS, and a touch of vanilla JavaScript.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Listings: three sample apartments -->
+    <section class="listings" id="listings">
+        <div class="container">
+            <h2>Available Residences</h2>
+            <p class="location" style="margin-bottom: 16px;">Select homes with light, proportion, and convenience.</p>
+            <div class="grid">
+                <!-- Card 1: 1 Bedroom — KSh 20,000/mo -->
+                <article class="card" data-tip="Great light • Hardwood floors">
+                    <a href="property.html?id=1" style="text-decoration:none; color:inherit; display:block;">
+                        <!-- Local image: Kilimani 1 bedroom -->
+                        <img class="media" alt="Kilimani Nairobi 1 bedroom apartment" src="images/066c46bc46ded6-modern-1-bedroom-apartment-in-kilimani-for-rent-kilimani-nairobi.jpg" data-fallback="images/apt1.jpeg,images/images (1).jpeg,images/41679570.jpg" />
+                        <div class="card-body">
+                            <div class="title-row">
+                                <div>
+                                    <div class="title">The Karura Residence</div>
+                                    <div class="location">Kilimani, Nairobi</div>
+                                </div>
+                                <div class="price">KSh 20,000/mo</div>
+                            </div>
+                            <div class="features"><span>1 Bed</span><span>1 Bath</span><span>55 sqm</span></div>
+                            <div class="actions">
+                                <a class="btn outline" href="property.html?id=1">View Details</a>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- Card 2: 2 Bedroom — KSh 27,000/mo -->
+                <article class="card" data-tip="Corner layout • Close to shops">
+                    <a href="property.html?id=2" style="text-decoration:none; color:inherit; display:block;">
+                        <!-- Local image: 2 bedroom -->
+                        <img class="media" alt="Westlands Nairobi 2 bedroom apartment" src="images/modern-2-bedroom-fully-furnished-apartment-plus-dsq-to-let-in-kilimani-hxljd.jpg" data-fallback="images/nairobi-astoria-apartments-lavington-photo-13.jpeg,images/42138135.jpg,images/images (2).jpeg" />
+                        <div class="card-body">
+                            <div class="title-row">
+                                <div>
+                                    <div class="title">Riverside Court</div>
+                                    <div class="location">Westlands, Nairobi</div>
+                                </div>
+                                <div class="price">KSh 27,000/mo</div>
+                            </div>
+                            <div class="features"><span>2 Bed</span><span>1 Bath</span><span>85 sqm</span></div>
+                            <div class="actions">
+                                <a class="btn outline" href="property.html?id=2">View Details</a>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- Card 3: Airbnb — KSh 6,000/night -->
+                <article class="card" data-tip="Near the beach • Flexible stays">
+                    <a href="property.html?id=3" style="text-decoration:none; color:inherit; display:block;">
+                        <!-- Local image: Airbnb -->
+                        <img class="media" alt="Nyali Mombasa coastal apartment Airbnb" src="images/play2.jpg" data-fallback="images/502149776.jpg,images/images (3).jpeg,images/images (4).jpeg" />
+                        <div class="card-body">
+                            <div class="title-row">
+                                <div>
+                                    <div class="title">Seaside Loft (Airbnb)</div>
+                                    <div class="location">Nyali, Mombasa</div>
+                                </div>
+                                <div class="price">KSh 6,000/night</div>
+                            </div>
+                            <div class="features"><span>1 Bed</span><span>1 Bath</span><span>50 sqm</span></div>
+                            <div class="actions">
+                                <a class="btn outline" href="property.html?id=3">View Details</a>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap: 10px;">
+            <div>© <span id="year"></span> 10 Labs Rentals</div>
+            <div class="social">
+                <a href="index.html" aria-label="Home">Home</a>
+                <a href="index.html#listings" aria-label="Listings">Listings</a>
+                <a href="contact.html" aria-label="Contact">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Inline JS: smooth scrolling, dynamic year -->
+    <script>
+        // Image fallback: if an image fails to load, cycle through provided fallbacks
+        function attachImageFallbacks() {
+            const imgs = document.querySelectorAll('img[data-fallback]');
+            imgs.forEach(function(img){
+                const list = img.getAttribute('data-fallback').split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+                if (!list.length) return;
+                let idx = 0;
+                img.addEventListener('error', function onErr(){
+                    if (idx < list.length) {
+                        img.src = list[idx++];
+                    } else {
+                        img.removeEventListener('error', onErr);
+                    }
+                });
+            });
+        }
+
+        attachImageFallbacks();
+        // Smooth scroll for on-page anchors
+        document.addEventListener('click', function(e) {
+            const link = e.target.closest('a[href^="#"]');
+            if (!link) return;
+            const id = link.getAttribute('href');
+            if (id.length > 1) {
+                const target = document.querySelector(id);
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        });
+
+        // Current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
+
+
